@@ -1,0 +1,9 @@
+services:
+  candle-playground:
+    build:
+      context: ../candle-playground/
+      dockerfile: Dockerfile.local
+    volumes:
+      - ../:/usr/src/candle-playground/
+    tty: true
+    working_dir: /usr/src/candle-playground/
