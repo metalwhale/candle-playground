@@ -3,7 +3,9 @@ services:
     build:
       context: ../candle-playground/
       dockerfile: Dockerfile.local
+    environment:
+      - HF_HOME=/usr/src/candle-playground/cache/huggingface
     volumes:
       - ../:/usr/src/candle-playground/
     tty: true
-    working_dir: /usr/src/candle-playground/
+    working_dir: /usr/src/candle-playground/candle-playground/
