@@ -11,3 +11,7 @@ Burn my heart, not my computer
     docker compose up --build --remove-orphans -d
     docker compose exec candle-playground bash
     ```
+3. Run example:
+    ```bash
+    cargo run --example qwen --release -- --prompt "Hello darkness, my old friend"
+    ```
