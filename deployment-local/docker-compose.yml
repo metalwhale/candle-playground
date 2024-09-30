@@ -9,3 +9,14 @@ services:
       - ../:/usr/src/candle-playground/
     tty: true
     working_dir: /usr/src/candle-playground/candle-playground/
+  evaluation:
+    build:
+      context: ../evaluation/
+      dockerfile: Dockerfile.local
+    environment:
+      - HF_HOME=/usr/src/candle-playground/cache/huggingface
+      - POETRY_CACHE_DIR=/usr/src/candle-playground/cache/poetry
+    volumes:
+      - ../:/usr/src/candle-playground/
+    tty: true
+    working_dir: /usr/src/candle-playground/evaluation/

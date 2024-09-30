@@ -1,0 +1,9 @@
+FROM python:3.12.6-bookworm
+
+# Install poetry
+RUN curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.8.3 python3 -
+ENV PATH="$PATH:/root/.local/bin"
+
+RUN apt update -y && \
+    # For "verovio" package
+    apt install -y swig
