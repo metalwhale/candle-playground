@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "evaluation"
+version = "0.1.0"
+description = ""
+authors = ["Metal Whale <metalwhale.dev@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+transformers = "^4.45.1"
+tiktoken = "^0.7.0"
+torch = "^2.4.1"
+torchvision = "^0.19.1"
+verovio = "^4.3.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

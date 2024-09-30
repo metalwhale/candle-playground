@@ -6,12 +6,37 @@ Burn my heart, not my computer
     ```bash
     cd ./deployment-local/
     ```
-2. Start and get inside the container:
+2. Start the containers:
     ```bash
     docker compose up --build --remove-orphans -d
+    ```
+
+### Evaluation
+1. Get inside `evaluation` container:
+    ```bash
+    docker compose exec evaluation bash
+    ```
+2. Install packages:
+    ```bash
+    poetry install --no-root
+    ```
+    This command will create a virtual environment in `../cache/poetry/virtualenvs`.
+3. Activate the virtual environment:
+    <pre>
+    source ../cache/poetry/virtualenvs/<b>ENVIRONMENT_NAME</b>/bin/activate
+    </pre>
+4. Run inference:
+    <pre>
+    python main.py <b>IMAGE_PATH</b>
+    </pre>
+
+### Run examples
+1. Get inside `candle-playground` container:
+    ```bash
     docker compose exec candle-playground bash
     ```
-3. Run example:
-    ```bash
-    cargo run --example qwen --release -- --prompt "Hello darkness, my old friend"
-    ```
+2. Run the corresponding command for each example:
+    <pre>
+    cargo run --example qwen --release -- --prompt <b>PROMPT</b>
+    cargo run --example got_ocr --release -- --image-path <b>IMAGE_PATH</b>
+    </pre>
