@@ -271,6 +271,7 @@ dependencies = [
  "candle-transformers",
  "clap",
  "hf-hub",
+ "rand",
  "serde_json",
  "tokenizers",
 ]

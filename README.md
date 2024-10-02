@@ -39,4 +39,5 @@ Burn my heart, not my computer
     <pre>
     cargo run --example qwen --release -- --prompt <b>PROMPT</b>
     cargo run --example got_ocr --release -- --image-path <b>IMAGE_PATH</b>
+    cargo run --example houou --release -- --prompt <b>PROMPT</b>
     </pre>
