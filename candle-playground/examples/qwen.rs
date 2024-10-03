@@ -21,27 +21,26 @@ fn main() -> Result<()> {
         "main".to_string(),
     ));
     let tokenizer = Tokenizer::from_file(repo.get("tokenizer.json")?).map_err(Error::msg)?;
-    let config_file = repo.get("config.json")?;
+    let device = Device::Cpu;
     let model = ModelForCausalLM::new(
-        &serde_json::from_slice(&std::fs::read(config_file)?)?,
+        &serde_json::from_slice(&std::fs::read(repo.get("config.json")?)?)?,
         unsafe {
             VarBuilder::from_mmaped_safetensors(
                 &vec![repo.get("model.safetensors")?],
                 DType::F32,
-                &Device::Cpu,
+                &device,
             )?
         },
     )?;
     let mut pipeline = TextGeneration::new(
-        model,
+        &device,
         tokenizer,
-        args.seed,
+        "<|endoftext|>",
         args.temperature,
         args.top_p,
         args.repeat_penalty,
         args.repeat_last_n,
-        &Device::Cpu,
-    );
-    pipeline.run(&args.prompt, args.sample_len)?;
+    )?;
+    pipeline.run(model, &args.prompt, args.sample_len)?;
     Ok(())
 }
