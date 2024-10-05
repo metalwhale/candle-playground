@@ -6,10 +6,10 @@ use anyhow::{Error, Result};
 use candle_core::{Device, Tensor};
 use candle_examples::token_output_stream::TokenOutputStream;
 use candle_transformers::generation::LogitsProcessor;
-use candle_transformers::models::quantized_llama::ModelWeights;
-use candle_transformers::models::qwen2::ModelForCausalLM;
 use clap::Parser;
 use tokenizers::Tokenizer;
+
+use crate::models::gemma2::Gemma;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -36,6 +36,9 @@ pub struct Args {
     /// The context size to consider for the repeat penalty.
     #[arg(long, default_value_t = 64)]
     pub repeat_last_n: usize,
+
+    #[arg(long)]
+    pub use_quantized: bool,
 }
 
 pub trait CausalForward {
@@ -131,14 +134,23 @@ impl TextGeneration {
     }
 }
 
-impl CausalForward for ModelWeights {
+impl CausalForward for candle_transformers::models::quantized_llama::ModelWeights {
     fn forward(&mut self, input_ids: &Tensor, pos: usize) -> Result<Tensor> {
         Ok(self.forward(input_ids, pos)?.squeeze(0)?)
     }
 }
 
-impl CausalForward for ModelForCausalLM {
+impl CausalForward for candle_transformers::models::qwen2::ModelForCausalLM {
     fn forward(&mut self, input_ids: &Tensor, pos: usize) -> Result<Tensor> {
         Ok(self.forward(input_ids, pos)?.squeeze(0)?.squeeze(0)?)
+    }
+}
+
+impl CausalForward for Gemma {
+    fn forward(&mut self, input_ids: &Tensor, pos: usize) -> Result<Tensor> {
+        Ok(match self {
+            Gemma::Full(model) => model.forward(input_ids, pos)?.squeeze(0)?.squeeze(0)?,
+            Gemma::Quantized(model_weights) => model_weights.forward(input_ids, pos)?.squeeze(0)?,
+        })
     }
 }
